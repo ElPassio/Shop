@@ -1,8 +1,12 @@
-import express from 'express';
-
+const express = require('express');
+const cors = require('cors');
 const app = express();
-const PORT = 5000;
-
+const PORT = 3000;
+const corsOptions = {
+    origin: 'http://localhost:5173', // Adjust this to your frontend's URL
+    methods: 'GET,POST,PUT,DELETE',
+    allowedHeaders: 'Content-Type,Authorization'
+};
 const products = [
     { id: 1, name: 'Product 1', price: 100, image: 'images/key.be0a5e2cda3a039132c35b67319829d785e50352.png', stock: 10 },
     { id: 2, name: 'Product 2', price: 200, image: 'images/key.be0a5e2cda3a039132c35b67319829d785e50352.png', stock: 20 },
@@ -19,7 +23,7 @@ const products = [
 
 // Middleware to parse JSON
 app.use(express.json());
-
+app.use(cors(corsOptions));
 app.get('/api/products', (req, res) => {
     res.send(products);
 });
