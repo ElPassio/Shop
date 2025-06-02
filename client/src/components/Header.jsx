@@ -12,11 +12,13 @@ function Header() {
           <a href="/" data-link>Inicio</a>
           <a href="/contacto" data-link>Contacto</a>
         </nav>
-            <Link to="/cart">
+        <nav id="user-nav">
+            <Link  to="/cart">
             Cart ({totalItems})
             </Link>
           <button>idioma</button>
           <button className="mdi mdi-account"> login</button>
+        </nav>
 
       </header>
   )

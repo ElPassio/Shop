@@ -1,6 +1,6 @@
 import React, { useContext } from 'react'
 import { CartContext } from '../context/CartContext'
-
+import './Cart.css'
 function Cart() {
     const { cartItems, updateQuantity, removeFromCart } = useContext(CartContext)
 
@@ -22,15 +22,17 @@ function Cart() {
   return (
     <div className="cart-page">
         <h2>Your Cart</h2>
-        {cartItems.lenghth === 0 ? (
-            <p>Your cart is empty</p>
+        {cartItems.length === 0 ? (
+            <div className="empty-cart">
+            <p>Your cart is empty  <i className="mdi mdi-cart-off"></i></p>
+            </div>
         ) : (
             <div className="cart-items-list">
                 {cartItems.map((item) => (
                     <div className="cart-item" key={item.id}>
                         <img src={item.image} alt={item.name} />
                         <h3>{item.name}</h3>
-                        <p>${item.price.toFixed(2)}</p>
+                        <p className='cart-item-price'>Price: ${item.price.toFixed(2)}</p>
                         <div className='cart-item-quantity-controls'>
                             <label htmlFor={`quantity-${item.id}`}>Quantity</label>
                             <input type="number" 
@@ -44,11 +46,15 @@ function Cart() {
                                 <i className="mdi mdi-delete"></i>
                             </button> 
                         </div>
-                        <p>Subtotal: ${(item.price*item.quantity).toFixed(2)}</p>
+                        <p className='cart-item-price'>Subtotal: ${(item.price*item.quantity).toFixed(2)}</p>
                     </div>
                 ))}
+                <button className="btn-clear-cart" onClick={() => cartItems.forEach(item => handleRemove(item.id))}>
+                    Clear Cart
+                </button>
+                <hr />
                 <div className="cart-summary">
-                    <h3>Total: ${calculateTotal()}</h3>
+                    <h3 className='cart-item-total'>Total: ${calculateTotal()}</h3>
                     <button className="btn btn-checkout">Proceed to Checkout</button>
                 </div>
             </div>

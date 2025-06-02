@@ -10,9 +10,10 @@
 .product-list {
   display: flex;
   flex-wrap: wrap;
+  max-width: 1149px;
   justify-content: center;
   text-align: center;
-  margin: 25px 0;
+  margin: 25px auto;
 }
 .product-container {
   background-color: #455a64;
