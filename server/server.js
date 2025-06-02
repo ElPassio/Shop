@@ -6,6 +6,7 @@ const PORT = 3000;
 
 // Construct the absolute path to client's public folder
 const clientPublicPath = path.join(__dirname, '..', 'client', 'public');
+app.use(express.static(clientPublicPath));
 // Define CORS options
 // This allows requests from the React app running on port 5173
 const corsOptions = {
@@ -35,16 +36,11 @@ app.use(express.json());
 app.use(cors(corsOptions));
 
 // Serve static files from the client's public directory
-app.use(express.static(clientPublicPath));
+
 
 // Serve the React app
 app.get('/api/products', (req, res) => {
-    res.send(products);
-});
-
-// Serve a specific product by ID
-app.get('/api/products/:id', (req, res) => {
-    res.send()
+    res.json(products);
 });
 
 // Start the server

@@ -58,7 +58,7 @@ header button:hover {
   align-items: center;
   justify-content: center;
   font-size: 14px;
-  text-decoration: none; /* importante para que no se subraye */
+  text-decoration: none; 
 }
 #user-nav a:hover,
 #user-nav button:hover {

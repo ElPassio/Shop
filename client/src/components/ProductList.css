@@ -63,21 +63,20 @@
 }
 .input-wrapper{
   background-color: #37474F;
-  display: flex; /* Use flexbox to align input and button */
-  justify-content: center; /* Center them horizontally */
-  align-items: center; /* Align them vertically */
-  padding: 5px 10px; /* Add padding to the top and bottom of the wrapper */
-    /* Remove padding: auto from .product-container .btn and add to the wrapper instead */
-  margin-bottom: 10px; /* Add space below the input/button group */
+  display: flex; 
+  justify-content: center; 
+  align-items: center; 
+  padding: 5px 10px; 
+  margin-bottom: 10px; 
 }
 .input-quantity {
-    width: 70px; /* Keep a specific width for the input */
-    height: 35px; /* Set a fixed height for consistency */
+    width: 70px;
+    height: 35px; 
     border-radius: 5px;
     border: none;
     padding: 5px;
     text-align: center;
-    margin-right: 5px; /* Add some space between input and button */
+    margin-right: 5px; 
 }
 .product-container .btn {
     background-color: #3cb371;
@@ -87,12 +86,10 @@
     cursor: pointer;
     font-weight: bold;
     transition: background-color 0.2s ease;
-    /* Remove margin-bottom: 5px; from here, it's now controlled by input-wrapper's margin-bottom */
-    /* Remove padding: auto; - use a fixed height or align with input height */
-    height: 35px; /* Match the input height */
-    width: 35px; /* Make the button square, adjust as needed */
-    display: flex; /* Use flex to center icon if it's there */
+    height: 35px; 
+    width: 35px; 
+    display: flex; 
     justify-content: center;
     align-items: center;
-    flex-shrink: 0; /* Prevent button from shrinking */
+    flex-shrink: 0; 
 }
