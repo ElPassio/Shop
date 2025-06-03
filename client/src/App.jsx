@@ -4,6 +4,7 @@
     import ProductList from './components/ProductList';
     import Cart from './components/Cart'; 
     import Footer from './components/Footer'; 
+    import Register from './components/Register';
     import { CartProvider } from './context/CartContext';
     import './App.css';
     import './index.css';
@@ -17,7 +18,8 @@
                         <main className="content">
                             <Routes>
                                 <Route path="/" element={<ProductList />} />
-                                <Route path="/cart" element={<Cart />} />  
+                                <Route path="/cart" element={<Cart />} />
+                                <Route path="/register" element={<Register />} />
                             </Routes>
                         </main>
                         <Footer />

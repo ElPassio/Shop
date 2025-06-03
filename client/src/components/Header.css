@@ -64,6 +64,10 @@ header button:hover {
 #user-nav button:hover {
   background-color: #2e7d32;
 }
+#user-nav p{
+  padding-left: 5px;
+  font-size: 16px; 
+}
 #main-nav{
   display: flex;
   flex-direction: row;
@@ -71,3 +75,52 @@ header button:hover {
   padding: 0;
   font-size: 14px;
 }
+header {
+  position: relative;
+  z-index: 1;
+}
+
+.login-dropdown {
+  position: absolute;
+  top: 100%; /* justo debajo del header */
+  right: 1rem;
+  width: 250px;
+  background: #607d8b; 
+  padding: 1rem;
+  box-shadow: 0px 8px 16px rgba(0, 0, 0, 0.2);
+  animation: slideDown 0.3s ease forwards;
+  z-index: 1000;
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+@keyframes slideDown {
+  from {
+    opacity: 0;
+    transform: translateY(-10%);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.login-dropdown input {
+  padding: 0.5rem;
+  font-size: 1rem;
+}
+
+.login-btn {
+  background-color: #007bff;
+  color: white;
+  border: none;
+  padding: 0.5rem;
+}
+
+.register-btn {
+  background-color: transparent;
+  border: 1px solid #007bff;
+  color: #007bff;
+  padding: 0.5rem;
+} 
