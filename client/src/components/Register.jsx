@@ -7,16 +7,30 @@ return (
   <h2 className='register-title'>Register</h2>
   <form>
     <div className="register-form">
-      <label htmlFor="username">Username:</label>
-      <input type="text" id="username" name="username" required />
-    
-    
+      <label htmlFor="name">First Name:</label>
+      <input type="text" id="name" name="name" required />
+      <label htmlFor="surname">Last Name:</label>
+      <input type="text" id="surname" name="surname" required />
       <label htmlFor="email">Email:</label>
       <input type="email" id="email" name="email" required />
-    
-    
+      <label htmlFor="phone">Phone Number:</label>
+      <input type="tel" id="phone" name="phone" required />
+      <label htmlFor="address">Address Line 1:</label>
+      <input type="text" id="address" name="address" required />
+      <label htmlFor="address2">Address Line 2:</label>
+      <input type="text" id="address2" name="address2" />
+      <label htmlFor="city">City:</label>
+      <input type="text" id="city" name="city" required />
+      <label htmlFor="state">State:</label>
+      <input type="text" id="state" name="state" required />
+      <label htmlFor="zip">Zip Code:</label>
+      <input type="text" id="zip" name="zip" required />
+      <label htmlFor="country">Country:</label>
+      <input type="text" id="country" name="country" required />
       <label htmlFor="password">Password:</label>
       <input type="password" id="password" name="password" required />
+      <label htmlFor="confirm-password">Confirm Password:</label>
+      <input type="password" id="confirm-password" name="confirm-password" required />
     </div>
     <button className='register-button' type="submit">Register</button>
   </form>
