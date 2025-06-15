@@ -22,7 +22,7 @@ function ProductCard({ product }) {
             </div>
             <h3>{product.name}</h3>
             <img src={product.image} alt={product.name} /> 
-            <h1>${product.price.toFixed(2)}</h1> 
+            <h1>${Number(product.price).toFixed(2)}</h1> 
 
             <div className="input-wrapper">
                 <input

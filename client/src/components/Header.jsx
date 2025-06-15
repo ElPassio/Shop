@@ -39,6 +39,7 @@ useEffect(() => {
         <nav id="main-nav">
           <a href="/" data-link>Inicio</a>
           <a href="/contacto" data-link>Contacto</a>
+          <Link to="/orders" data-link>Mis Órdenes</Link>
         </nav>
         <nav id="user-nav">
             <Link  to="/cart">

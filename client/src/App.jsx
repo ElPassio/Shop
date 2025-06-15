@@ -5,6 +5,7 @@
     import Cart from './components/Cart'; 
     import Footer from './components/Footer'; 
     import Register from './components/Register';
+    import Orders from './components/Orders';
     import { CartProvider } from './context/CartContext';
     import './App.css';
     import './index.css';
@@ -20,6 +21,7 @@
                                 <Route path="/" element={<ProductList />} />
                                 <Route path="/cart" element={<Cart />} />
                                 <Route path="/register" element={<Register />} />
+                                <Route path="/orders" element={<Orders />} />
                             </Routes>
                         </main>
                         <Footer />
