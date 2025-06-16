@@ -15,7 +15,11 @@ export const CartProvider = ({ children }) => {
     useEffect(() => {
         localStorage.setItem("cartItems", JSON.stringify(cartItems));
     }, [cartItems]);
-
+    const restoreStock = (productId, quantity) => {
+    const currentStock = parseInt(localStorage.getItem(`stock_${productId}`)) || 0;
+    const newStock = currentStock + quantity;
+    localStorage.setItem(`stock_${productId}`, newStock);
+};
     const addToCart = (product, quantity) => {
         setCartItems((prevItems) => {
             const existingItemIndex = prevItems.findIndex(item => item.id === product.id);
@@ -31,8 +35,14 @@ export const CartProvider = ({ children }) => {
         });  
     }
     const removeFromCart = (id) => {
-        setCartItems((prevItems) => prevItems.filter(item => item.id !== id));
-    }
+    setCartItems((prevItems) => {
+        const itemToRemove = prevItems.find(item => item.id === id);
+        if (itemToRemove) {
+            restoreStock(id, itemToRemove.quantity);
+        }
+        return prevItems.filter(item => item.id !== id);
+    });
+};
     const updateQuantity = (id, newQuantity) => {
         setCartItems((prevItems) => {
             prevItems.map(item => 

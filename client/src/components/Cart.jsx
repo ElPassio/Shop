@@ -32,7 +32,7 @@ function Cart() {
                     <div className="cart-item" key={item.id}>
                         <img src={item.image} alt={item.name} />
                         <h3>{item.name}</h3>
-                        <p className='cart-item-price'>Price: ${item.price.toFixed(2)}</p>
+                        <p className='cart-item-price'>Price: ${Number(item.price).toFixed(2)}</p>
                         <div className='cart-item-quantity-controls'>
                             <label htmlFor={`quantity-${item.id}`}>Quantity</label>
                             <input type="number" 
