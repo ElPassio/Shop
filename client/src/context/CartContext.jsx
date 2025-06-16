@@ -43,15 +43,63 @@ export const CartProvider = ({ children }) => {
         return prevItems.filter(item => item.id !== id);
     });
 };
-    const updateQuantity = (id, newQuantity) => {
-        setCartItems((prevItems) => {
-            prevItems.map(item => 
-                item.id === id ? { ...item, quantity : newQuantity} : item
-            );
+const checkout = async () => {
+    try {
+        const payload = cartItems.map(item => ({
+            id: item.id,
+            quantity: item.quantity
+        }));
+
+        const res = await fetch('http://localhost:3000/api/checkout', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(payload)
         });
-    }          
+
+        if (!res.ok) {
+            const error = await res.json();
+            throw new Error(error.message || "Error al procesar el pago.");
+        }
+
+        const updatedStocks = await res.json(); // [{ id, stock }, ...]
+
+        // 🔁 Actualizar localStorage de stock (si usás localmente el stock)
+        const localStock = JSON.parse(localStorage.getItem("productStocks") || "{}");
+
+        updatedStocks.forEach(({ id, stock }) => {
+            localStock[id] = stock;
+        });
+
+        localStorage.setItem("productStocks", JSON.stringify(localStock));
+
+        // 🧹 Limpiar el carrito SIN tocar el stock
+        setCartItems([]); // sin llamar a removeFromCart (que modifica el stock)
+
+        return { success: true };
+
+    } catch (error) {
+        console.error("Checkout error:", error);
+        return { success: false, message: error.message };
+    }
+};
+const clearCart = () => setCartItems([]);
+    const updateQuantity = (id, newQuantity) => {
+    setCartItems((prevItems) => {
+        return prevItems.map(item => {
+            if (item.id === id) {
+                const difference = item.quantity - newQuantity;
+                if (difference > 0) {
+                    // Si se bajó la cantidad, se devuelve al stock
+                    restoreStock(id, difference);
+                }
+                return { ...item, quantity: newQuantity };
+            }
+            return item;
+        });
+    });
+};     
     return (
-        <CartContext.Provider value={{ cartItems, addToCart, removeFromCart, updateQuantity }} >
+        <CartContext.Provider value={{ cartItems, addToCart, removeFromCart, updateQuantity, checkout, clearCart }} >
             {children}
         </CartContext.Provider>
     );

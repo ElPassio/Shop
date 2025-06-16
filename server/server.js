@@ -70,6 +70,57 @@ app.get('/api/products', async (req, res) => { // La convertimos en una función
         res.status(500).json({ error: 'Error interno del servidor al consultar los productos.' });
     }
 });
+app.post('/api/checkout', async (req, res) => {
+    const cartItems = req.body; // [{ id: 1, quantity: 2 }, ...]
+
+    if (!Array.isArray(cartItems) || cartItems.length === 0) {
+        return res.status(400).json({ message: 'Carrito vacío o malformado' });
+    }
+
+    const connection = await pool.getConnection();
+
+    try {
+        await connection.beginTransaction(); // 🌀 Transacción para asegurar atomicidad
+
+        const updatedStocks = [];
+
+        for (const item of cartItems) {
+            const [rows] = await connection.query(
+                `SELECT quantity FROM stock WHERE product_id = ? FOR UPDATE`,
+                [item.id]
+            );
+
+            if (rows.length === 0) {
+                throw new Error(`Producto con ID ${item.id} no encontrado`);
+            }
+
+            const currentStock = rows[0].quantity;
+
+            if (currentStock < item.quantity) {
+                throw new Error(`Stock insuficiente para el producto ${item.id}`);
+            }
+
+            // Actualizamos stock
+            const newStock = currentStock - item.quantity;
+            await connection.query(
+                `UPDATE stock SET quantity = ? WHERE product_id = ?`,
+                [newStock, item.id]
+            );
+
+            updatedStocks.push({ id: item.id, stock: newStock });
+        }
+
+        await connection.commit(); // ✅ Confirmamos cambios
+        res.json(updatedStocks);   // Enviamos los nuevos stocks
+
+    } catch (error) {
+        await connection.rollback(); // ❌ Cancelamos cambios ante error
+        console.error("Error en /api/checkout:", error);
+        res.status(400).json({ message: error.message });
+    } finally {
+        connection.release();
+    }
+});
 
 
 // Start the server

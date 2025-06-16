@@ -2,8 +2,8 @@ import React, { useContext } from 'react'
 import { CartContext } from '../context/CartContext'
 import './Cart.css'
 function Cart() {
-    const { cartItems, updateQuantity, removeFromCart } = useContext(CartContext)
-
+    const { cartItems, updateQuantity, removeFromCart, clearCart } = useContext(CartContext)
+    
     const handleRemove = (id) => {
         removeFromCart(id);
     }
@@ -14,6 +14,44 @@ function Cart() {
             removeFromCart(id);
         }
     }
+    const handleCheckout = async () => {
+    const payload = cartItems.map(item => ({
+        id: item.id,
+        quantity: item.quantity
+    }));
+
+    try {
+        const res = await fetch('/api/checkout', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(payload)
+        });
+
+        if (!res.ok) {
+            const error = await res.json();
+            alert(`Error: ${error.message}`);
+            return;
+        }
+
+        const updatedStocks = await res.json(); // [{ id: 1, stock: 2 }, ...]
+
+        // Actualizar localStorage
+        updatedStocks.forEach(product => {
+            localStorage.setItem(`stock_${product.id}`, product.stock);
+        });
+
+        alert('¡Compra realizada con éxito! Gracias por tu pedido.');
+
+        // ✅ Limpiar carrito sin alterar stock
+        clearCart(); // o clearCart() si usás esa función
+
+    } catch (err) {
+        console.error('Error during checkout:', err);
+        alert('Hubo un error al procesar el pago.');
+    }
+};
+
+
     const calculateTotal = () => {
         return cartItems.reduce((total, item) => total + item.price * item.quantity, 0).toFixed(2);
     }
@@ -55,7 +93,7 @@ function Cart() {
                 <hr />
                 <div className="cart-summary">
                     <h3 className='cart-item-total'>Total: ${calculateTotal()}</h3>
-                    <button className="btn btn-checkout">Proceed to Checkout</button>
+                    <button className="btn btn-checkout" onClick={handleCheckout}>Proceed to Checkout</button>
                 </div>
             </div>
         )}    
