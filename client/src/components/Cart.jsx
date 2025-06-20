@@ -8,11 +8,16 @@ function Cart() {
         removeFromCart(id);
     }
     const handlequantityChange = (id, quantity) => {
-        if (quantity > 0){
-            updateQuantity(id, quantity);
-        }else{
-            removeFromCart(id);
-        }
+         if (Number.isNaN(quantity) || quantity === "") {
+        // No hacer nada mientras se escribe
+        return;
+    }
+
+    if (quantity > 0) {
+        updateQuantity(id, quantity);
+    } else {
+        removeFromCart(id);
+    }
     }
     const handleCheckout = async () => {
     const payload = cart.map(item => ({

@@ -86,25 +86,28 @@ const clearCart = () => setCartItems([]);
         return prevItems.map(item => {
             if (item.id === id) {
                 const difference = item.quantity - newQuantity;
-                if (difference > 0) {
-                    // Si se bajó la cantidad, se devuelve al stock
-                    restoreStock(id, difference);
-                }
-                else if (difference < 0) {
-                    // Si se aumentó la cantidad, se verifica el stock
-                    const currentStock = parseInt(localStorage.getItem(`stock_${id}`)) || 0;
+                if (difference === 0) return item;
+
+                // ✅ Solo hacemos restoreStock una vez:
+                const currentStock = parseInt(localStorage.getItem(`stock_${id}`)) || 0;
+
+                if (difference < 0) {
+                    // Quiero sumar cantidad → necesito más stock
                     if (currentStock + difference < 0) {
                         alert(`No hay suficiente stock para ${item.name}.`);
-                        return item; // No se actualiza si no hay stock suficiente
+                        return item;
                     }
                 }
+
+                // ✅ Solo una vez y con el valor real (positivo o negativo)
                 restoreStock(id, difference);
+
                 return { ...item, quantity: newQuantity };
             }
             return item;
         });
     });
-};     
+};  
     return (
         <CartContext.Provider value={{ cart: cartItems, addToCart, removeFromCart, updateQuantity, checkout, clearCart }} >
             {children}
