@@ -43,6 +43,7 @@ export const CartProvider = ({ children }) => {
         return prevItems.filter(item => item.id !== id);
     });
 };
+
 const checkout = async () => {
     try {
         const payload = cartItems.map(item => ({
@@ -63,17 +64,14 @@ const checkout = async () => {
 
         const updatedStocks = await res.json(); // [{ id, stock }, ...]
 
-        // 🔁 Actualizar localStorage de stock (si usás localmente el stock)
-        const localStock = JSON.parse(localStorage.getItem("productStocks") || "{}");
-
+        // 🔁 Actualizar localStorage usando el mismo formato que el resto de la app
         updatedStocks.forEach(({ id, stock }) => {
-            localStock[id] = stock;
+            // En lugar de usar un objeto "productStocks", actualiza cada item individualmente
+            localStorage.setItem(`stock_${id}`, stock);
         });
 
-        localStorage.setItem("productStocks", JSON.stringify(localStock));
-
-        // 🧹 Limpiar el carrito SIN tocar el stock
-        setCartItems([]); // sin llamar a removeFromCart (que modifica el stock)
+        // 🧹 Limpiar el carrito
+        setCartItems([]);
 
         return { success: true };
 
@@ -92,6 +90,15 @@ const clearCart = () => setCartItems([]);
                     // Si se bajó la cantidad, se devuelve al stock
                     restoreStock(id, difference);
                 }
+                else if (difference < 0) {
+                    // Si se aumentó la cantidad, se verifica el stock
+                    const currentStock = parseInt(localStorage.getItem(`stock_${id}`)) || 0;
+                    if (currentStock + difference < 0) {
+                        alert(`No hay suficiente stock para ${item.name}.`);
+                        return item; // No se actualiza si no hay stock suficiente
+                    }
+                }
+                restoreStock(id, difference);
                 return { ...item, quantity: newQuantity };
             }
             return item;
@@ -99,7 +106,7 @@ const clearCart = () => setCartItems([]);
     });
 };     
     return (
-        <CartContext.Provider value={{ cartItems, addToCart, removeFromCart, updateQuantity, checkout, clearCart }} >
+        <CartContext.Provider value={{ cart: cartItems, addToCart, removeFromCart, updateQuantity, checkout, clearCart }} >
             {children}
         </CartContext.Provider>
     );

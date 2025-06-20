@@ -3,8 +3,8 @@ import './Header.css'
 import { Link, useNavigate } from 'react-router-dom' 
 import { CartContext } from '../context/CartContext'
 function Header() {
-  const {cartItems} = useContext(CartContext);
-  const totalItems = cartItems.reduce((total, item) => total + item.quantity, 0);
+  const {cart} = useContext(CartContext);
+  const totalItems = cart.reduce((total, item) => total + item.quantity, 0);
   const [showLogin, setShowLogin] = useState(false);
   const loginBtnRef = useRef(null);
   const loginBoxRef = useRef(null);

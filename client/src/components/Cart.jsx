@@ -2,7 +2,7 @@ import React, { useContext } from 'react'
 import { CartContext } from '../context/CartContext'
 import './Cart.css'
 function Cart() {
-    const { cartItems, updateQuantity, removeFromCart, clearCart } = useContext(CartContext)
+    const { cart, updateQuantity, removeFromCart, clearCart } = useContext(CartContext)
     
     const handleRemove = (id) => {
         removeFromCart(id);
@@ -15,7 +15,7 @@ function Cart() {
         }
     }
     const handleCheckout = async () => {
-    const payload = cartItems.map(item => ({
+    const payload = cart.map(item => ({
         id: item.id,
         quantity: item.quantity
     }));
@@ -53,20 +53,20 @@ function Cart() {
 
 
     const calculateTotal = () => {
-        return cartItems.reduce((total, item) => total + item.price * item.quantity, 0).toFixed(2);
+        return cart.reduce((total, item) => total + item.price * item.quantity, 0).toFixed(2);
     }
 
 
   return (
     <div className="cart-page">
         <h2>Your Cart</h2>
-        {cartItems.length === 0 ? (
+        {cart.length === 0 ? (
             <div className="empty-cart">
             <p>Your cart is empty  <i className="mdi mdi-cart-off"></i></p>
             </div>
         ) : (
             <div className="cart-items-list">
-                {cartItems.map((item) => (
+                {cart.map((item) => (
                     <div className="cart-item" key={item.id}>
                         <img src={item.image} alt={item.name} />
                         <h3>{item.name}</h3>
@@ -87,7 +87,7 @@ function Cart() {
                         <p className='cart-item-price'>Subtotal: ${(item.price*item.quantity).toFixed(2)}</p>
                     </div>
                 ))}
-                <button className="btn-clear-cart" onClick={() => cartItems.forEach(item => handleRemove(item.id))}>
+                <button className="btn-clear-cart" onClick={() => cart.forEach(item => handleRemove(item.id))}>
                     Clear Cart
                 </button>
                 <hr />
